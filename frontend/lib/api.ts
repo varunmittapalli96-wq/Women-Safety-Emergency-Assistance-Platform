@@ -1,4 +1,10 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const getApiUrl = (): string => {
+  const raw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const clean = raw.trim().replace(/\/+$/, '');
+  return clean.endsWith('/api') ? clean : `${clean}/api`;
+};
+
+const API_URL = getApiUrl();
 
 export interface User {
   _id: string;

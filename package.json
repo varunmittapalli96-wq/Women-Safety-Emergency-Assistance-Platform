@@ -1,0 +1,26 @@
+{
+  "name": "bsafe-platform",
+  "version": "1.0.0",
+  "description": "bSafe — Women Safety & Emergency Assistance Platform",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "seed": "npm --prefix backend run seed"
+  },
+  "keywords": [
+    "women-safety",
+    "emergency-response",
+    "sos-tracking",
+    "realtime-alerts",
+    "firebase-auth"
+  ],
+  "author": "bSafe Team",
+  "license": "ISC"
+}

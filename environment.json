@@ -1,0 +1,249 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "project": "bSafe — Women Safety & Emergency Assistance Platform",
+  "version": "1.0.0",
+  "runtime": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0",
+    "mongodb": ">=6.0.0"
+  },
+  "environments": {
+    "development": {
+      "backendUrl": "http://localhost:5000",
+      "frontendUrl": "http://localhost:3000"
+    },
+    "production": {
+      "backendUrl": "https://api.bsafe.app",
+      "frontendUrl": "https://bsafe.app"
+    }
+  },
+  "libraries": {
+    "backend": [
+      {
+        "package": "express",
+        "version": "^4.21.0",
+        "category": "Server & Routing",
+        "description": "Fast, unopinionated minimalist web server framework for REST API endpoints."
+      },
+      {
+        "package": "mongoose",
+        "version": "^8.7.0",
+        "category": "Database & ODM",
+        "description": "Object Data Modeling (ODM) library for MongoDB, handling geospatial 2dsphere indexing for emergency radius searches."
+      },
+      {
+        "package": "jsonwebtoken",
+        "version": "^9.0.2",
+        "category": "Authentication & Security",
+        "description": "Signs and verifies application JWT tokens with HMAC-SHA256 and RS256 algorithms."
+      },
+      {
+        "package": "bcryptjs",
+        "version": "^2.4.3",
+        "category": "Security & Cryptography",
+        "description": "One-way salted hashing algorithm for user credentials and local authentication."
+      },
+      {
+        "package": "socket.io",
+        "version": "^4.8.3",
+        "category": "Real-time Communication",
+        "description": "WebSocket server enabling live SOS alert dispatching and real-time GPS coordinate streaming."
+      },
+      {
+        "package": "google-auth-library",
+        "version": "^11.1.0",
+        "category": "OAuth & Identity",
+        "description": "Google APIs client for cryptographic ID token verification and Google OAuth2 code exchange."
+      },
+      {
+        "package": "cors",
+        "version": "^2.8.5",
+        "category": "Network & Middleware",
+        "description": "Cross-Origin Resource Sharing middleware controlling authorized browser origins."
+      },
+      {
+        "package": "helmet",
+        "version": "^8.3.0",
+        "category": "Security & Headers",
+        "description": "Secures HTTP response headers with strict Cross-Origin-Opener-Policy for OAuth popups."
+      },
+      {
+        "package": "express-rate-limit",
+        "version": "^8.7.0",
+        "category": "Security & Anti-Abuse",
+        "description": "Rate limiting middleware preventing brute-force login attempts and API abuse."
+      },
+      {
+        "package": "dotenv",
+        "version": "^16.4.5",
+        "category": "Configuration",
+        "description": "Zero-dependency module that loads environment variables from .env into process.env."
+      },
+      {
+        "package": "nodemon",
+        "version": "^3.1.7",
+        "category": "Development Tool",
+        "description": "Monitors file changes and automatically restarts the backend server during development."
+      }
+    ],
+    "frontend": [
+      {
+        "package": "next",
+        "version": "^14.2.15",
+        "category": "Framework",
+        "description": "React framework with App Router, server-side rendering, and static optimization."
+      },
+      {
+        "package": "react",
+        "version": "^18.3.1",
+        "category": "UI Library",
+        "description": "Core declarative component library for building reactive user interfaces."
+      },
+      {
+        "package": "react-dom",
+        "version": "^18.3.1",
+        "category": "UI Library",
+        "description": "React package serving as the entry point to the DOM and server rendering."
+      },
+      {
+        "package": "firebase",
+        "version": "^12.19.0",
+        "category": "Identity & Analytics",
+        "description": "Firebase Client SDK for Google Popup Authentication and client telemetry."
+      },
+      {
+        "package": "socket.io-client",
+        "version": "^4.8.3",
+        "category": "Real-time Communication",
+        "description": "Client WebSocket connection for listening to active alerts and emitting live location updates."
+      },
+      {
+        "package": "leaflet",
+        "version": "^1.9.4",
+        "category": "Mapping & Geospatial",
+        "description": "Open-source JavaScript interactive map library."
+      },
+      {
+        "package": "react-leaflet",
+        "version": "^4.2.1",
+        "category": "Mapping & Geospatial",
+        "description": "React bindings for Leaflet map components."
+      },
+      {
+        "package": "lucide-react",
+        "version": "^0.454.0",
+        "category": "Icons & Visuals",
+        "description": "Beautiful, accessible icon library with consistent aesthetic for safety alerts and dashboard UI."
+      },
+      {
+        "package": "tailwindcss",
+        "version": "^3.4.14",
+        "category": "Styling",
+        "description": "Utility-first CSS framework for responsive dark-mode styling and glassmorphism UI."
+      },
+      {
+        "package": "typescript",
+        "version": "^5.6.3",
+        "category": "Type Safety",
+        "description": "Typed superset of JavaScript ensuring robust compile-time contract enforcement."
+      }
+    ]
+  },
+  "environmentVariables": {
+    "backend": [
+      {
+        "name": "PORT",
+        "required": true,
+        "default": "5000",
+        "description": "TCP port on which the Express HTTP and WebSocket server listens."
+      },
+      {
+        "name": "NODE_ENV",
+        "required": true,
+        "default": "development",
+        "description": "Application environment mode ('development' or 'production')."
+      },
+      {
+        "name": "FRONTEND_URL",
+        "required": true,
+        "default": "http://localhost:3000",
+        "description": "Allowed CORS origin and redirect target for OAuth callbacks."
+      },
+      {
+        "name": "MONGODB_URI",
+        "required": true,
+        "description": "MongoDB Atlas connection URI including username, password, cluster, and database name."
+      },
+      {
+        "name": "JWT_SECRET",
+        "required": true,
+        "description": "Cryptographic secret key for signing JSON Web Tokens. Must be at least 32 characters in production."
+      },
+      {
+        "name": "FIREBASE_PROJECT_ID",
+        "required": true,
+        "default": "bsafe-f874c",
+        "description": "Firebase project ID used to verify Firebase ID tokens against Google x509 public signing keys."
+      },
+      {
+        "name": "GOOGLE_CLIENT_ID",
+        "required": false,
+        "description": "Google Cloud Console OAuth 2.0 Client ID for direct redirect flow."
+      },
+      {
+        "name": "GOOGLE_CLIENT_SECRET",
+        "required": false,
+        "description": "Google Cloud Console OAuth 2.0 Client Secret for code exchange."
+      },
+      {
+        "name": "GOOGLE_CALLBACK_URL",
+        "required": false,
+        "default": "http://localhost:5000/api/auth/google/callback",
+        "description": "Authorized OAuth 2.0 callback redirect URI."
+      }
+    ],
+    "frontend": [
+      {
+        "name": "NEXT_PUBLIC_API_URL",
+        "required": true,
+        "default": "http://localhost:5000/api",
+        "description": "Public URL of the backend REST and authentication API."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_API_KEY",
+        "required": true,
+        "description": "Firebase web app API key."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
+        "required": true,
+        "description": "Firebase Auth domain (e.g. bsafe-f874c.firebaseapp.com)."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_PROJECT_ID",
+        "required": true,
+        "description": "Firebase project ID (bsafe-f874c)."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET",
+        "required": true,
+        "description": "Firebase Storage bucket URL."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
+        "required": true,
+        "description": "Firebase Cloud Messaging sender ID."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_APP_ID",
+        "required": true,
+        "description": "Firebase Web App identifier."
+      },
+      {
+        "name": "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID",
+        "required": false,
+        "description": "Google Analytics 4 Measurement ID."
+      }
+    ]
+  }
+}
