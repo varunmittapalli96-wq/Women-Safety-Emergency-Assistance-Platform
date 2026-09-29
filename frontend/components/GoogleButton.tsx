@@ -44,10 +44,15 @@ export default function GoogleButton({
       let userFriendlyMsg = 'Google sign-in failed. Please try again.';
       if (fbErr?.code === 'auth/popup-blocked') {
         userFriendlyMsg = 'Sign-in popup was blocked by your browser. Please allow popups for this site.';
+      } else if (fbErr?.code === 'auth/unauthorized-domain') {
+        const hostname = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+        userFriendlyMsg = `Domain "${hostname}" is not authorized in Firebase. Please add "${hostname}" to your Firebase Console under Authentication > Settings > Authorized domains.`;
       } else if (fbErr?.response?.data?.message) {
         userFriendlyMsg = fbErr.response.data.message;
       } else if (fbErr?.message) {
-        userFriendlyMsg = fbErr.message;
+        // Strip messy 'Firebase: Error (...)' prefix if present
+        const cleanMsg = fbErr.message.replace(/^Firebase:\s*Error\s*\((.*?)\)\.?$/i, '$1');
+        userFriendlyMsg = cleanMsg || fbErr.message;
       }
 
       if (onError) {
