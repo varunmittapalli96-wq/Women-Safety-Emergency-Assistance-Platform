@@ -48,6 +48,9 @@ router.post('/', authorize('user'), async (req, res) => {
     (async () => {
       try {
         const io = req.app.get('io');
+        if (io) {
+          io.emit('alert:created', alert);
+        }
         
         // 1. Notify emergency contacts via new abstraction
         const notifyResult = await NotificationService.notifyEmergencyContacts(req.user._id, alert._id, req.user.name, alert.location);

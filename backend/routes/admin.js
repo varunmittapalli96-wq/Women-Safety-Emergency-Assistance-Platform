@@ -9,6 +9,39 @@ const router = express.Router();
 router.use(protect);
 router.use(authorize('admin'));
 
+// Admin Dashboard Overview & Stats
+router.get('/dashboard', async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments({ role: 'user' });
+    const totalVolunteers = await User.countDocuments({ role: 'volunteer' });
+    const pendingVolunteers = await User.countDocuments({ role: 'volunteer', verificationStatus: 'PENDING' });
+    const totalAlerts = await Alert.countDocuments();
+    const activeAlerts = await Alert.countDocuments({ status: { $in: ['active', 'accepted', 'en_route', 'arrived', 'assisting'] } });
+    const resolvedAlerts = await Alert.countDocuments({ status: 'resolved' });
+    const totalSafetyZones = await SafetyZone.countDocuments();
+    const recentAlerts = await Alert.find()
+      .populate('userId', 'name phone email')
+      .populate('responderId', 'name phone')
+      .sort('-createdAt')
+      .limit(10);
+
+    res.json({
+      stats: {
+        totalUsers,
+        totalVolunteers,
+        pendingVolunteers,
+        totalAlerts,
+        activeAlerts,
+        resolvedAlerts,
+        totalSafetyZones,
+      },
+      recentAlerts,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Analytics Overview
 router.get('/analytics/overview', async (req, res) => {
   try {
@@ -316,12 +349,30 @@ router.put('/alerts/:id/resolve', async (req, res) => {
       return res.status(404).json({ message: 'Alert not found' });
     }
     alert.status = status || 'resolved';
+    if (alert.status === 'resolved' && !alert.resolvedAt) {
+      alert.resolvedAt = new Date();
+    }
     alert.statusHistory.push({
       status: alert.status,
       note: note || 'Resolved by admin',
       timestamp: new Date(),
     });
     await alert.save();
+
+    const io = req.app.get('io');
+    if (io) {
+      io.to(`alert:${alert._id}`).emit('response:status:update', {
+        alertId: alert._id,
+        status: alert.status,
+        note: note || 'Resolved by admin',
+        updatedAt: new Date().toISOString(),
+      });
+      io.emit('alert:updated', {
+        alertId: alert._id,
+        status: alert.status,
+      });
+    }
+
     res.json(alert);
   } catch (error) {
     res.status(500).json({ message: error.message });
